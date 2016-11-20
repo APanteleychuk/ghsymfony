@@ -1,0 +1,3 @@
+palexes_example_homepage:
+    path:     /
+    defaults: { _controller: PalexesExampleBundle:Default:index }

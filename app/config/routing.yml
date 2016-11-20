@@ -1,0 +1,7 @@
+palexes_example:
+    resource: "@PalexesExampleBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
