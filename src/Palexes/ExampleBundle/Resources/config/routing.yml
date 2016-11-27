@@ -17,4 +17,4 @@ palexes_example_blog_about:
     defaults: { _controller: PalexesExampleBundle:Blog:about, action: action, slug: slug }
     requirements:
             action: '\w+'
-            slug: '\w+'
+            slug: '\d+'

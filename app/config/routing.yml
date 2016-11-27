@@ -2,6 +2,10 @@ palexes_example:
     resource: "@PalexesExampleBundle/Resources/config/routing.yml"
     prefix:   /
 
+palexes_example_prefix:
+    resource: "@PalexesExampleBundle/Resources/config/prefix_routing.yml"
+    prefix:   /someprefix/
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

@@ -1,0 +1,9 @@
+palexes_example_prefix_index:
+    path:     /
+    defaults: { _controller: PalexesExampleBundle:Prefix:index }
+
+palexes_example_prefix_test:
+    path:     /{id}
+    defaults: { _controller: PalexesExampleBundle:Prefix:test, id: id }
+    requirements:
+                id: '\w+'
