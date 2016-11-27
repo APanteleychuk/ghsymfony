@@ -1,3 +1,20 @@
 palexes_example_homepage:
     path:     /
     defaults: { _controller: PalexesExampleBundle:Default:index }
+
+palexes_example_blog:
+    path:     /blog
+    defaults: { _controller: PalexesExampleBundle:Blog:index }
+
+palexes_example_blog_post:
+    path:     /blog/{id}
+    defaults: { _controller: PalexesExampleBundle:Blog:post }
+    requirements:
+            id: '\d+'
+
+palexes_example_blog_about:
+    path:     /{action}/{slug}
+    defaults: { _controller: PalexesExampleBundle:Blog:about, action: action, slug: slug }
+    requirements:
+            action: '\w+'
+            slug: '\w+'
