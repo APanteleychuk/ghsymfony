@@ -12,6 +12,11 @@ class BlogController extends Controller
         return $this->render('PalexesExampleBundle:Default:blog_list.html.twig');
     }
 
+
+    /**
+     * @param $id integer
+     * @return Response     Return test content with id
+     */
     public function postAction($id)
     {
         return new Response(
@@ -19,6 +24,11 @@ class BlogController extends Controller
         );
     }
 
+    /**
+     * @param $action string
+     * @param $slug integer
+     * @return Response     Return info about url
+     */
     public function aboutAction($action, $slug)
     {
         return new Response(

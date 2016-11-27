@@ -2,8 +2,14 @@ palexes_example_prefix_index:
     path:     /
     defaults: { _controller: PalexesExampleBundle:Prefix:index }
 
-palexes_example_prefix_test:
+palexes_example_prefix_generate:
     path:     /{id}
-    defaults: { _controller: PalexesExampleBundle:Prefix:test, id: id }
+    defaults: { _controller: PalexesExampleBundle:Prefix:generate, id: id }
+    requirements:
+                id: '\w+'
+
+palexes_example_prefix_json:
+    path:     /{id}/json
+    defaults: { _controller: PalexesExampleBundle:Prefix:json, id: id }
     requirements:
                 id: '\w+'
