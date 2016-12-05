@@ -1,6 +1,6 @@
 <?php
 
-namespace Palexes\ExampleBundle\Controller;
+namespace Palex\BlogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -8,6 +8,6 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('PalexesExampleBundle:Default:index.html.twig');
+        return $this->render('PalexBlogBundle:Default:index.html.twig');
     }
 }
