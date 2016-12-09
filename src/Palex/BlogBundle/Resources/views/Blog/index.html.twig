@@ -8,6 +8,6 @@
              <h2>{{ post }}</h2>
         {% endfor %}
     {% else %}
-        {{ post }}
+        {{ post|cut }}
     {% endif %}
 {% endblock %}
