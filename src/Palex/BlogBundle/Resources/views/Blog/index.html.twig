@@ -4,8 +4,8 @@
 
 {% block content %}
     {% if app.request.attributes.get('_route') == 'palex_blog_homepage' %}
-        {% for blog in blogs %}
-             <h2>{{ blog }}</h2>
+        {% for post in posts %}
+             <h2>{{ post }}</h2>
         {% endfor %}
     {% else %}
         {{ post }}
