@@ -3,11 +3,7 @@
 {% block page_title %}My Blog{% endblock %}
 
 {% block content %}
-    {% if app.request.attributes.get('_route') == 'palex_blog_homepage' %}
         {% for post in posts %}
              <h2>{{ post }}</h2>
         {% endfor %}
-    {% else %}
-        {{ post|cut }}
-    {% endif %}
 {% endblock %}

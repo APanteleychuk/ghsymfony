@@ -22,13 +22,12 @@ class CutExtension extends \Twig_Extension
      */
     public function cutFilter($text, $quantity = '', $ending = '...')
     {
-        if(empty($quantity)){
+        if($quantity === ''){
             $quantity = strlen($text);
         }
         $text = substr($text, 0, $quantity);
         $text = $text.$ending;
         return $text;
-
     }
 
     /**

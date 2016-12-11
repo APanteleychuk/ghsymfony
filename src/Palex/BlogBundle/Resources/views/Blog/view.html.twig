@@ -3,6 +3,6 @@
 {% block page_title %}Post - {{ postId }}{% endblock %}
 {% block content %}
     <div>
-        {{ post }}
+        {{ post|cut(150) }}
     </div>
 {% endblock %}
