@@ -1,0 +1,11 @@
+palex_blog_homepage:
+    path:     /
+    defaults: { _controller: PalexBlogBundle:Blog:index }
+
+palex_blog_post:
+    path:     /{postId}
+    defaults: { _controller: PalexBlogBundle:Blog:post, postId: 1 }
+
+palex_blog_admin:
+    path:     /admin/
+    defaults: { _controller: PalexBlogBundle:Admin:index }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Palexes\ExampleBundle\Tests\Controller;
+namespace Palex\BlogBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

@@ -1,8 +1,3 @@
-palexes_example:
-    resource: "@PalexesExampleBundle/Resources/config/routing.yml"
+palex_blog:
+    resource: "@PalexBlogBundle/Resources/config/routing.yml"
     prefix:   /
-
-palexes_example_prefix:
-    resource: "@PalexesExampleBundle/Resources/config/prefix_routing.yml"
-    prefix:   /someprefix/
-

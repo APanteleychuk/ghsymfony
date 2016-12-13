@@ -1,0 +1,11 @@
+services:
+#    palex_blog.example:
+#        class: Palex\BlogBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+services:
+  palex_blog.twig.cut_extension:
+        class: Palex\BlogBundle\Twig\CutExtension
+        public: false
+        tags:
+            - { name: twig.extension }

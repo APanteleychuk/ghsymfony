@@ -21,7 +21,11 @@
         "symfony/polyfill-apcu": "^1.0",
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
-        "incenteev/composer-parameter-handler": "^2.0"
+        "incenteev/composer-parameter-handler": "^2.0",
+        "symfony/assetic-bundle": "^2.8",
+        "bower-asset/bootstrap": "^3.3",
+        "twitter/bootstrap": "3.*",
+        "components/jquery": "1.11.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -60,6 +64,10 @@
         },
         "branch-alias": {
             "dev-master": "3.1-dev"
+        },
+        "asset-installer-paths": {
+            "npm-asset-library": "web/vendor",
+            "bower-asset-library": "web/vendor"
         }
     }
 }

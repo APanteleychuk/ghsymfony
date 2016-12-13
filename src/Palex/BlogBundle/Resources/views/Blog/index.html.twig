@@ -1,0 +1,9 @@
+{% extends "PalexBlogBundle::layout.html.twig" %}
+
+{% block page_title %}My Blog{% endblock %}
+
+{% block content %}
+        {% for post in posts %}
+             <h2>{{ post }}</h2>
+        {% endfor %}
+{% endblock %}
