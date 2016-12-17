@@ -10,4 +10,14 @@ namespace Palex\BlogBundle\Repository;
  */
 class JobRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAllJobs()
+    {
+        $allJobs = $this->createQueryBuilder('j')
+            ->select('j.id, j.name, j.description')
+            ->leftJoin('j.category', 'c')
+            ->orderBy('j.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+        return $allJobs;
+    }
 }

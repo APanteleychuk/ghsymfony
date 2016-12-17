@@ -5,9 +5,6 @@ namespace Palex\BlogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Job
- *
- * @ORM\Table(name="job")
  * @ORM\Entity(repositoryClass="Palex\BlogBundle\Repository\JobRepository")
  */
 class Job
@@ -62,6 +59,12 @@ class Job
      * @ORM\Column(name="description", type="text")
      */
     private $description;
+
+    /**
+     * @var Category
+     * @ORM\ManyToOne(targetEntity="Palex\BlogBundle\Entity\Category", inversedBy="jobs")
+     */
+    private $category;
 
 
     /**
@@ -216,6 +219,25 @@ class Job
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return $this
+     */
+    public function setCategory(Category $category = null)
+    {
+        $this->category = $category;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 }
 
