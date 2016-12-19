@@ -27,15 +27,15 @@ class City
     private $name;
 
     /**
-     * @var ArrayCollection
+     * @var Category[]|ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Palex\BlogBundle\Entity\Category", mappedBy="city")
+     * @ORM\ManyToMany(targetEntity="Palex\BlogBundle\Entity\Category", inversedBy="city")
      */
-    private $category;
+    private $categories;
 
     public function __construct()
     {
-        $this->category = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     /**
@@ -73,11 +73,47 @@ class City
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|Category[]
      */
-    public function getCategory()
+    public function getCategories()
     {
-        return $this->category;
+        return $this->categories;
+    }
+
+    /**
+     * @param ArrayCollection|Category[] $category
+     *
+     * @return $this
+     */
+    public function setCategories($category)
+    {
+        $this->categories = $category;
+
+        return $this;
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return $this
+     */
+    public function addCategory($category)
+    {
+        $this->categories[] = $category;
+
+        return $this;
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return $this
+     */
+    public function removeCategories($category)
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
     }
 }
 

@@ -40,18 +40,18 @@ class Category
      */
     private $jobs;
 
+    /**
+     * @var City[]|ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Palex\BlogBundle\Entity\City", mappedBy="categories")
+     */
+    private $cities;
+
     function __construct()
     {
         $this->jobs = new ArrayCollection();
+        $this->cities = new ArrayCollection();
     }
-
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\ManyToOne(targetEntity="Palex\BlogBundle\Entity\City", inversedBy="category")
-     */
-    private $city;
-
 
     /**
      * Get id
@@ -119,6 +119,25 @@ class Category
     public function getJobs()
     {
         return $this->jobs;
+    }
+
+    /**
+     * @param City $city
+     *
+     * @return $this
+     */
+    public function setCity(City $city = null)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
     }
 }
 

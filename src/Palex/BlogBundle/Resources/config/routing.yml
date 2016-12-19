@@ -7,5 +7,13 @@ palex_blog_post:
     defaults: { _controller: PalexBlogBundle:Blog:post, postId: 1 }
 
 palex_blog_admin:
-    path:     /admin/
+    path:     /admin
     defaults: { _controller: PalexBlogBundle:Admin:index }
+
+palex_blog_job:
+    path:     /job/
+    defaults: { _controller: PalexBlogBundle:Job:index }
+
+palex_blog_job_create:
+    path:     /job/create
+    defaults: { _controller: PalexBlogBundle:Job:addJob }

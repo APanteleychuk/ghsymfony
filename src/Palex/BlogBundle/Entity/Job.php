@@ -12,7 +12,7 @@ class Job
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -21,42 +21,42 @@ class Job
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=100)
+     * @ORM\Column(type="string", length=100)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="company", type="string", length=150)
+     * @ORM\Column(type="string", length=150)
      */
     private $company;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="city", type="string", length=100)
+     * @ORM\Column(type="string", length=100)
      */
     private $city;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="vacancy", type="string", length=255)
+     * @ORM\Column(type="string", length=255)
      */
     private $vacancy;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="requirements", type="text")
+     * @ORM\Column(type="text")
      */
     private $requirements;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(type="text")
      */
     private $description;
 
