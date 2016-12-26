@@ -1,8 +1,10 @@
 {% extends "PalexBlogBundle::layout.html.twig" %}
 
-{% block page_title %}Post - {{ postId }}{% endblock %}
+
+{% block page_title %}{% endblock %}
 {% block content %}
+    <h2>Post id {{ postId }}</h2>
     <div>
-        {{ post|cut(150) }}
+        {{ post }}
     </div>
 {% endblock %}

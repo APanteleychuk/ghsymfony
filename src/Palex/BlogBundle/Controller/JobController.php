@@ -2,6 +2,7 @@
 
 namespace Palex\BlogBundle\Controller;
 
+use Palex\BlogBundle\Entity\Category;
 use Palex\BlogBundle\Entity\Job;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,6 +44,22 @@ class JobController extends Controller
         $em->flush();
 
         return new Response('Job '.$job->getName().' saved!');
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getAllCategoryAction()
+    {
+        $categories = $this->getDoctrine()->getManager()->getRepository(
+            'PalexBlogBundle:Category')->findAllCategory();
+        if(!$categories){
+            throw $this->createNotFoundException(
+                'Category not found, please add category!');
+        }
+        return $this->render('PalexBlogBundle:Blog:index.html.twig', [
+            'posts'=>$categories,
+        ]);
     }
 
 }

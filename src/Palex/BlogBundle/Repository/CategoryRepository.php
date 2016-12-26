@@ -12,11 +12,11 @@ class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
     public function findAllCategory()
     {
-         $this->createQueryBuilder('c')
-            ->select('c.id, c.name, j.description')
-            ->orderBy('j.name', 'ASC')
+         $allCategories = $this->createQueryBuilder('c')
+            ->select('c.id, c.name, c.description')
+            ->orderBy('c.name', 'ASC')
             ->getQuery()
             ->getResult();
-        return $this;
+        return $allCategories;
     }
 }

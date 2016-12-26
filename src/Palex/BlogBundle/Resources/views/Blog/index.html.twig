@@ -4,6 +4,12 @@
 
 {% block content %}
         {% for post in posts %}
-             <h2>{{ post }}</h2>
+            {{ dump(post) }}
+             <h2>{{ post.name }}</h2>
+             <h2>{{ post.description }}</h2>
+            {% if post.category_name != null %}
+                <h1>Category - {{ post.category_name }}</h1>
+            {% endif %}
+            <hr>
         {% endfor %}
 {% endblock %}

@@ -122,13 +122,31 @@ class Category
     }
 
     /**
-     * @param City $city
+     * @param ArrayCollection|Category[] $cities
      *
      * @return $this
      */
-    public function setCity(City $city = null)
+    public function setCities($cities)
     {
-        $this->city = $city;
+        $this->cities = $cities;
+
+        foreach ($cities as $city) {
+            $city->addCity($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param City $city
+     * @return $this
+     */
+
+    public function addCity($city)
+    {
+        $this->cities[] = $city;
+        $city->addCategory($this);
+
         return $this;
     }
 

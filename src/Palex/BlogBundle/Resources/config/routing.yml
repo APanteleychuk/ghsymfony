@@ -1,9 +1,9 @@
 palex_blog_homepage:
     path:     /
-    defaults: { _controller: PalexBlogBundle:Blog:index }
+    defaults: { _controller: PalexBlogBundle:Default:index }
 
 palex_blog_post:
-    path:     /{postId}
+    path:     /blog/{postId}
     defaults: { _controller: PalexBlogBundle:Blog:post, postId: 1 }
 
 palex_blog_admin:
@@ -17,3 +17,7 @@ palex_blog_job:
 palex_blog_job_create:
     path:     /job/create
     defaults: { _controller: PalexBlogBundle:Job:addJob }
+
+palex_blog_job_all_category:
+    path:     /job/categores
+    defaults: { _controller: PalexBlogBundle:Job:getAllCategory }

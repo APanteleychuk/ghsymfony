@@ -14,12 +14,12 @@ class CategoryFixtures extends AbstractFixture implements OrderedFixtureInterfac
         $category1 = new Category();
         $category1->setName('CategoryName#1');
         $category1->setDescription('BlaBlaBla#1');
-        $category1->setCity($this->getReference('city#1'));
+        $category1->setCities($this->getReference('city#1'));
 
         $category2 = new Category();
         $category2->setName('CategoryName#2');
         $category2->setDescription('BlaBlaBla#2');
-        $category2->setCity($this->getReference('city#2'));
+        $category2->setCities($this->getReference('city#2'));
 
 
         $manager->persist($category1);

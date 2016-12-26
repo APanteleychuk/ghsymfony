@@ -29,7 +29,7 @@ class City
     /**
      * @var Category[]|ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Palex\BlogBundle\Entity\Category", inversedBy="city")
+     * @ORM\ManyToMany(targetEntity="Palex\BlogBundle\Entity\Category", inversedBy="cities")
      */
     private $categories;
 
@@ -109,7 +109,7 @@ class City
      *
      * @return $this
      */
-    public function removeCategories($category)
+    public function removeCategory($category)
     {
         $this->categories->removeElement($category);
 
