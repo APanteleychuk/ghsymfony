@@ -4,6 +4,7 @@ namespace Palex\BlogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,12 +30,11 @@ class Post
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\Length(min="3")
-     * @Assert\title
      */
     private $title;
 
     /**
-     *@ORM\ManyToOne(targetEntity="Palex\BlogBundle\Entity\Category", inversedBy="posts")
+     * @ORM\ManyToOne(targetEntity="Palex\BlogBundle\Entity\Category", inversedBy="posts")
      * @Assert\NotBlank()
      */
     private $category;
@@ -50,23 +50,15 @@ class Post
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=50, nullable=true )
      */
     private $image;
 
     /**
-     * @ORM\OneToMany(targetEntity="Palex\BlogBundle\Entity\Comment", mappedBy="comment")
+     * @ORM\OneToMany(targetEntity="Palex\BlogBundle\Entity\Comment", mappedBy="post")
      * @Assert\Valid()
      */
     private $comments;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
-     */
-    private $date;
 
     /**
      * @var Tag[]|ArrayCollection
@@ -85,20 +77,13 @@ class Post
      * @var \DateTime
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
+     * @Gedmo\Timestampable()
      */
-    private $created;
-
-    /**
-     * @var \DateTime
-     * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
-     */
-    private $updated;
+    private $dataCreated;
 
     public function __construct()
     {
-        $this->setCreated(new \DateTime());
-        $this->setUpdated(new \DateTime());
+        $this->setdataCreated(new \DateTime());
         $this->comments = new ArrayCollection();
         $this->tags = new ArrayCollection();
     }
@@ -216,26 +201,6 @@ class Post
     }
 
     /**
-     * @param \DateTime $date
-     *
-     * @return $this
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    /**
      * @param ArrayCollection|Tag[] $tags
      *
      * @return $this
@@ -316,13 +281,13 @@ class Post
     }
 
     /**
-     * @param \DateTime $created
+     * @param \DateTime $dataCreated
      *
      * @return $this
      */
-    public function setCreated($created)
+    public function setDataCreated($dataCreated)
     {
-        $this->created = $created;
+        $this->dataCreated = $dataCreated;
 
         return $this;
     }
@@ -330,36 +295,8 @@ class Post
     /**
      * @return \DateTime
      */
-    public function getCreated()
+    public function getDataCreated()
     {
-        return $this->created;
-    }
-
-    /**
-     * @param \DateTime $updated
-     *
-     * @return $this
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedValue()
-    {
-        $this->setUpdated(new \DateTime());
+        return $this->dataCreated;
     }
 }
