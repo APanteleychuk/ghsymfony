@@ -2,6 +2,8 @@
 
 namespace Palex\BlogBundle\Controller;
 
+use Palex\BlogBundle\Entity\Post;
+use Palex\BlogBundle\Form\Type\PostType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -13,23 +15,31 @@ class BlogController extends Controller
      */
     public function indexAction()
     {
-        $posts = [1,2,3,4,5];
+        $posts = $this->getDoctrine()->getManager()->getRepository('PalexBlogBundle:Post')->findAll();
         return $this->render('PalexBlogBundle:Blog:index.html.twig', [
             'posts'=>$posts,
         ]);
     }
 
-    /**
-     * @param $postId
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function postAction($postId)
+    public function addPostAction(Request $request)
     {
-        $post = 'Was King of England for two years, from 1483 until his death in 1485 in the Battle of Bosworth Field. He was the last king of the House of York and the last of the Plantagenet dynasty. His defeat at Bosworth Field, the decisive battle of the Wars of the Roses, is sometimes regarded as the end of the Middle Ages in England.';
-        return $this->render('PalexBlogBundle:Blog:view.html.twig', [
-            'postId'=>$postId,
-            'post'=>$post,
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $post = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($post);
+            $em->flush();
+        }
+
+        return $this->render('PalexBlogBundle:Blog:form.html.twig', [
+            'form' => $form->createView(),
         ]);
+
     }
 }
 
