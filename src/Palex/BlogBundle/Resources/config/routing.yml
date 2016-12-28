@@ -2,6 +2,10 @@ palex_blog_homepage:
     path:     /
     defaults: { _controller: PalexBlogBundle:Blog:index }
 
+palex_blog_post_add:
+    path:     /addpost/
+    defaults: { _controller: PalexBlogBundle:Blog:addPost }
+
 palex_blog_post:
     path:     /{postId}
     defaults: { _controller: PalexBlogBundle:Blog:post, postId: 1 }

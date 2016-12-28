@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="Palex\BlogBundle\Repository\CategoryRepository")
- * @UniqueEntity(fields={name})
+ * @UniqueEntity(fields={"name"})
  */
 class Category
 {

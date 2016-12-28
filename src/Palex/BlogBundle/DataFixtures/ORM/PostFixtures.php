@@ -47,7 +47,7 @@ class PostFixtures extends AbstractFixture implements OrderedFixtureInterface
         $post4->setCategory($this->getReference('category2'));
         $post4->setTitle('You Have to Geocache Central Park to Find This Art');
         $post4->setContent('It started when an artist got tired of paying two high rents. Brad Troemel was switching between Airbnb-ing his apartment to pay for his studio, and renting out his studio to pay for his apartment, sleeping in one or the other. As an artist, sculptor, teacher and web entrepreneur in New York City, he needed both: a place to live, and a place to store his work. In his search to make it all cheaper, he posed a question: What if he could store it somewhere for free until the time of purchase? In the tree trunks and cliffs of Central Park, Troemel found his solution.');
-        $post4->setImage('images/T36117a04529459639a841d67a64cee73.jpg');
+        $post4->setImage('images/36117a04529459639a841d67a64cee73.jpg');
         $post4->setAuthor('Anonymous');
         $post4->setDate($faker->dateTime);
         $this->addReference('post4',$post4);
