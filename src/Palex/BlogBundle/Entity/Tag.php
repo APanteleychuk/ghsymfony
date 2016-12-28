@@ -4,6 +4,7 @@ namespace Palex\BlogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="Palex\BlogBundle\Repository\TagRepository")
@@ -21,7 +22,7 @@ class Tag
 
     /**
      * @var string
-     *
+     * @Assert\Length(min="3")
      * @ORM\Column(type="string", length=255)
      */
     private $tag;

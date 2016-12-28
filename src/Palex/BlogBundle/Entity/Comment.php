@@ -3,6 +3,7 @@
 namespace Palex\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="Palex\BlogBundle\Repository\CommentRepository")
@@ -27,14 +28,14 @@ class Comment
 
     /**
      * @var \DateTime
-     *
+     * @Assert\DateTime()
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\DateTime()
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;

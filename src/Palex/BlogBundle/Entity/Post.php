@@ -4,10 +4,13 @@ namespace Palex\BlogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="Palex\BlogBundle\Repository\PostRepository")
+ * @UniqueEntity(fields={"title"})
  */
 class Post
 {
@@ -25,11 +28,14 @@ class Post
      *
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
+     * @Assert\Length(min="3")
+     * @Assert\title
      */
     private $title;
 
     /**
      *@ORM\ManyToOne(targetEntity="Palex\BlogBundle\Entity\Category", inversedBy="posts")
+     * @Assert\NotBlank()
      */
     private $category;
 
@@ -37,6 +43,7 @@ class Post
      * @var string
      *
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $content;
 
@@ -49,6 +56,7 @@ class Post
 
     /**
      * @ORM\OneToMany(targetEntity="Palex\BlogBundle\Entity\Comment", mappedBy="comment")
+     * @Assert\Valid()
      */
     private $comments;
 
@@ -56,12 +64,14 @@ class Post
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $date;
 
     /**
      * @var Tag[]|ArrayCollection
      * @ORM\ManyToMany(targetEntity="Palex\BlogBundle\Entity\Tag", inversedBy="posts")
+     * @Assert\Valid()
      */
     private $tags;
 
@@ -74,12 +84,14 @@ class Post
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $created;
 
     /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $updated;
 
