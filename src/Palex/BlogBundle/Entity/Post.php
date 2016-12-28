@@ -4,6 +4,7 @@ namespace Palex\BlogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="Palex\BlogBundle\Repository\PostRepository")
@@ -23,6 +24,7 @@ class Post
      * @var string
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $title;
 
@@ -266,7 +268,7 @@ class Post
      *
      * @return $this
      */
-    public function setCategory($category, $category = null)
+    public function setCategory(Category $category = null)
     {
         $this->category = $category;
 
