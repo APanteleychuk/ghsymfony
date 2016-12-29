@@ -19,14 +19,10 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->setMethod('POST')
             ->add('title', TextType::class,['label'=>'Title'])
             ->add('content', TextareaType::class, ['label'=>'Content'])
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
-                'choice_label' => 'name',
-                'multiple' => false,
-                'expanded' => true,
-            ])
+            ->add('category')
             ->add('image', FileType::class, ['required' => false])
             ->add('author', HiddenType::class, [
                 'data' => 'anonymous'])
