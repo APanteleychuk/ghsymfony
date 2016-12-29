@@ -30,6 +30,14 @@ class BlogController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $post = $form->getData();
+            $file = $post->getImage();
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+            $file->move(
+                $this->getParameter('post_image_directory'),
+                $fileName
+            );
+            $post->setImage($fileName);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
