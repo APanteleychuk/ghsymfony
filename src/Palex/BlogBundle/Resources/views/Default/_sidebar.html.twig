@@ -5,7 +5,7 @@
             <h4>Category posts</h4>
                 <div class="list-group">
                     {% for category in categories %}
-                        <a href="" class="list-group-item">{{ category.name }}</a>
+                        <a href="{{ path('palex_blog_category_post', {'slug': category.slug }) }}" class="list-group-item">{{ category.name }}</a>
                     {% endfor %}
                 </div>
         {% endif %}

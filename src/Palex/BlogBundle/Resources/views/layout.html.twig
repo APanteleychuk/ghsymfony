@@ -1,23 +1,26 @@
-{% include"PalexBlogBundle:Default:head.html.twig" %}
+<!DOCTYPE html>
+<html>
+{% include"PalexBlogBundle:Default:_head.html.twig" %}
+<body>
 {% block body %}
         {% block main_menu %}
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <ul class="nav navbar-nav">
-                        {#<li><a href="{{ path('homepage-show') }}">Homepage</a></li>#}
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">AddPost</a></li>
-                        <li><a href="#">About-us</a></li>
-                    </ul>
-                </div>
-            </nav>
+            {% include"PalexBlogBundle:Default:_navbar.html.twig" %}
         {% endblock %}
     <div class="container">
-    <div id="page-title">
-            <h1>{% block page_title %}{% endblock %}</h1>
+        <div class="row">
+             <div class="col-md-8 col-xs-12">
+                 <div id="page-title" class="row">
+                     <h1>{% block page_title %}{% endblock %}</h1>
+                     {% block content %}{% endblock %}
+                 </div>
+             </div>
+            <div class="col-xs-6 col-md-4 sidebar-offcanvas">
+                {% include"PalexBlogBundle:Default:_sidebar.html.twig" %}
+            </div>
         </div>
-        {% block content %}{% endblock %}
-        {% block javascripts %}{% endblock %}
     </div>
+    {% block javascripts %}{% endblock %}
 {% endblock %}
-{% include"PalexBlogBundle:Default:footer.html.twig" %}
+{% include"PalexBlogBundle:Default:_footer.html.twig" %}
+</body>
+</html>
