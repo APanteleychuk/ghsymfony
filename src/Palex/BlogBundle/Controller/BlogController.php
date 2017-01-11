@@ -3,6 +3,7 @@
 namespace Palex\BlogBundle\Controller;
 
 use Palex\BlogBundle\Entity\Post;
+use Palex\BlogBundle\Entity\Category;
 use Palex\BlogBundle\Form\Type\PostType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,9 +16,39 @@ class BlogController extends Controller
      */
     public function indexAction()
     {
-        $posts = $this->getDoctrine()->getManager()->getRepository('PalexBlogBundle:Post')->findAll();
+        $posts = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('PalexBlogBundle:Post')
+            ->findAll();
+        if(!$posts){
+            throw $this->createNotFoundException('The posts does not exist!');
+        }
+        $categories = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('PalexBlogBundle:Category')
+            ->findAll();
         return $this->render('PalexBlogBundle:Blog:index.html.twig', [
             'posts'=>$posts,
+            'categories'=>$categories,
+        ]);
+    }
+
+    public function postAction($postId)
+    {
+        $comments = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('PalexBlogBundle:Comment')->findComments($postId);
+
+        $post = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('PalexBlogBundle:Post')
+            ->findOneBy(['id'=> $postId ]);
+        if(!$post){
+            throw $this->createNotFoundException('The post does not exist!');
+        }
+        return $this->render('PalexBlogBundle:Blog:view.html.twig', [
+            'post'=>$post,
+            'comments'=>$comments,
         ]);
     }
 
@@ -48,6 +79,31 @@ class BlogController extends Controller
             'form' => $form->createView(),
         ]);
 
+    }
+
+    public function showByCategoryAction($slug)
+    {
+        $categories = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('PalexBlogBundle:Category')
+            ->findAll();
+        $category = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('PalexBlogBundle:Category')
+            ->findBy(
+                ['slug' => $slug]
+            );
+        $posts = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('PalexBlogBundle:Post')
+            ->findBy(
+                ['category' => $category]
+            );
+
+        return $this->render('PalexBlogBundle:Blog:index.html.twig', [
+            'posts'=>$posts,
+            'categories'=>$categories,
+        ]);
     }
 }
 

@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="Palex\BlogBundle\Repository\CategoryRepository")
@@ -42,6 +43,14 @@ class Category
      */
     private $posts;
 
+    /**
+     * @var string
+     *
+     * @Gedmo\Slug(fields={"name"}, updatable=false)
+     * @ORM\Column(type="string")
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -53,6 +62,24 @@ class Category
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function setSlug($value)
+    {
+        $this->slug = $value;
+        return $this;
     }
 
     /**
