@@ -4,6 +4,7 @@ namespace Palex\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="Palex\BlogBundle\Repository\CommentRepository")
@@ -28,15 +29,16 @@ class Comment
 
     /**
      * @var \DateTime
-     * @Assert\DateTime()
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
+     * @Gedmo\Timestampable()
      */
     private $createdAt;
 
     /**
      * @var \DateTime
      * @Assert\DateTime()
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
 
