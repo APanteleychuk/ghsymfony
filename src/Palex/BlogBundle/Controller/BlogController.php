@@ -2,9 +2,11 @@
 
 namespace Palex\BlogBundle\Controller;
 
+use Palex\BlogBundle\Entity\Comment;
 use Palex\BlogBundle\Entity\Post;
 use Palex\BlogBundle\Entity\Category;
 use Palex\BlogBundle\Form\Type\PostType;
+use Palex\BlogBundle\Form\Type\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -33,22 +35,49 @@ class BlogController extends Controller
         ]);
     }
 
-    public function postAction($postId)
+    public function postAction(Request $request, $slug)
     {
+        $comment = new Comment();
+        $post = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('PalexBlogBundle:Post')
+            ->findOneBy(['slug'=> $slug ]);
+        $comment->setPost($post);
+        $form = $this->createForm(CommentType::class, $comment, [
+            'method' => 'POST',
+        ]);
+
+        $form->handleRequest($request);
+        $text = '';
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
+            $text = 'Comment added!';
+        }
+
+        $categories = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('PalexBlogBundle:Category')
+            ->findAll();
+        $postId = $post->getId();
         $comments = $this->getDoctrine()
             ->getManager()
             ->getRepository('PalexBlogBundle:Comment')->findComments($postId);
 
-        $post = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('PalexBlogBundle:Post')
-            ->findOneBy(['id'=> $postId ]);
+
         if(!$post){
             throw $this->createNotFoundException('The post does not exist!');
         }
         return $this->render('PalexBlogBundle:Blog:view.html.twig', [
             'post'=>$post,
             'comments'=>$comments,
+            'categories'=>$categories,
+            'form' => $form->createView(),
+            'text' => $text,
         ]);
     }
 
@@ -58,6 +87,7 @@ class BlogController extends Controller
         $form = $this->createForm(PostType::class, $post);
 
         $form->handleRequest($request);
+        $text = '';
 
         if ($form->isSubmitted() && $form->isValid()) {
             $post = $form->getData();
@@ -73,10 +103,12 @@ class BlogController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
+            $text = "Post added!";
         }
 
         return $this->render('PalexBlogBundle:Blog:form.html.twig', [
             'form' => $form->createView(),
+            'text' => $text,
         ]);
 
     }
