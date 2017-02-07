@@ -2,6 +2,7 @@
 
 namespace Palex\BlogBundle\Form\Type;
 
+use Palex\BlogBundle\Entity\Comment;
 use Palex\BlogBundle\Entity\Post;
 use Palex\BlogBundle\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -14,25 +15,22 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PostType extends AbstractType
+class CommentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->setMethod('POST')
-            ->add('title', TextType::class,['label'=>'Title'])
-            ->add('content', TextareaType::class, ['label'=>'Content'])
-            ->add('category')
-            ->add('image', FileType::class, ['required' => false])
-            ->add('author', HiddenType::class, [
-                'data' => 'anonymous'])
-            ->add('save', SubmitType::class);
+            ->add('comment', TextareaType::class, ['label'=>'your comment'])
+//            ->add('author', HiddenType::class, ['data' => 'anonymous'])
+//            ->add('post_id', HiddenType::class, ['data' => 'anonymous'])
+            ->add('Add comment', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Post::class,
+            'data_class' => Comment::class,
         ]);
     }
 

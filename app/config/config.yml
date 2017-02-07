@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
+    post_image_directory: '%kernel.root_dir%/../web/uploads/images'
 
 framework:
     #esi:             ~
@@ -74,3 +75,12 @@ stof_doctrine_extensions:
         default:
             sluggable: true
             timestampable: true
+knp_menu:
+    # use "twig: false" to disable the Twig extension and the TwigRenderer
+    twig:
+        template: KnpMenuBundle::menu.html.twig
+    #  if true, enables the helper for PHP templates
+    templating: false
+    # the renderer to use, list is also available by default
+    default_renderer: twig
+

@@ -1,8 +1,36 @@
 {% extends "PalexBlogBundle::layout.html.twig" %}
-
-{% block page_title %}Post - {{ postId }}{% endblock %}
-{% block content %}
-    <div>
-        {{ post|cut(150) }}
-    </div>
-{% endblock %}
+    {% block page_title %}
+        {{ post.title }}
+    {% endblock %}
+    {% block content %}
+        <div>{{ post.author}}</div>
+        <div>{{ post.dataCreated|date('Y-m-d H:i:s') }}</div>
+        <div>
+            <div>
+                <img width="100%" src="{{ asset('uploads/images/'~ post.image) }}">
+            </div>
+            <p>{{post.content}}</p>
+        </div>
+        {% if text is defined %}
+            <h4 style="color: red">{{ text }}</h4>
+        {% endif %}
+        {% if comments is defined %}
+            <div>
+                {% for comment in comments  %}
+                <div>{{ comment.comment }}</div>
+                    {% if comment.updatedAt|length %}
+                        <div>Comment updated at: {{ comment.updatedAt|date('Y-m-d H:i:s') }}</div>
+                    {% else %}
+                        <div>Comment created at: {{ comment.createdAt|date('Y-m-d H:i:s') }}</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="block-form">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    {% endblock %}

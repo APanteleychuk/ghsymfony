@@ -49,12 +49,17 @@ class Post
 
     /**
      * @var string
-     *
+     * @Assert\File(
+     *     maxSize="10M",
+     *     mimeTypes={"image/jpg", "image/gif", "image/png"},
+     *     mimeTypesMessage="Please upload jpg/gif formats"
+     * )
      * @ORM\Column(type="string", length=50, nullable=true )
      */
     private $image;
 
     /**
+     * @var string
      * @ORM\OneToMany(targetEntity="Palex\BlogBundle\Entity\Comment", mappedBy="post")
      * @Assert\Valid()
      */
@@ -80,6 +85,39 @@ class Post
      * @Gedmo\Timestampable()
      */
     private $dataCreated;
+
+    /**
+     * @var string
+     * @Gedmo\Slug(fields={"title"}, updatable=false)
+     * @ORM\Column(type="string")
+     */
+    private $slug;
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+    /**
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function setSlug($value)
+    {
+        $this->slug = $value;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->title;
+    }
 
     public function __construct()
     {

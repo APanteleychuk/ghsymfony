@@ -1,0 +1,15 @@
+body {
+    padding-top:70px;
+}
+.footer {
+    height:50px;
+    background:#3c3c3c;
+}
+.footer .container {
+    padding:15px 0 0 0;
+    text-align: center;
+}
+/*main menu*/
+ul.nav li.dropdown:hover > ul.dropdown-menu {
+ display: block;
+}

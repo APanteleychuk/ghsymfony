@@ -1,13 +1,16 @@
 {% extends "PalexBlogBundle::layout.html.twig" %}
-
-{% block page_title %}My Blog{% endblock %}
+{% block page_title %}Welcome to my blog!{% endblock %}
 {% block content %}
     <div class="row">
         {% for post in posts %}
             <div class="blog-post">
-                <h2 class="blog-post-title">{{ post.title }}</h2>
-                <img src="{{ asset(post.image) }}">
-                <p>{{ post.content }}</p>
+                <a href="{{ path('palex_blog_post',{'category': post.category.slug ,'slug': post.slug } ) }}">
+                    <h2 class="blog-post-title">{{ post.title }}</h2>
+                </a>
+                <img style="max-width: 800px" class="img-rounded" src="{{ asset('uploads/images/' ~post.image) }}">
+                <p>{{ post.content|cut(150) }}</p>
+                <span>{{ post.dataCreated|date('Y-m-d H:i:s') }}</span><br>
+                <span>{{ post.author }}</span>
             </div>
             <hr>
         {% endfor %}
