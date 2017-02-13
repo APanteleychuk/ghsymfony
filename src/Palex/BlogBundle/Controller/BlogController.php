@@ -9,12 +9,16 @@ use Palex\BlogBundle\Form\Type\PostType;
 use Palex\BlogBundle\Form\Type\CommentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\HttpFoundation\Response;
+
 
 
 class BlogController extends Controller
 {
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction()
     {
@@ -22,18 +26,25 @@ class BlogController extends Controller
             ->getManager()
             ->getRepository('PalexBlogBundle:Post')
             ->findAll();
-        if(!$posts){
-            throw $this->createNotFoundException('The posts does not exist!');
-        }
         $categories = $this->getDoctrine()
             ->getManager()
             ->getRepository('PalexBlogBundle:Category')
             ->findAll();
+        if(!$posts || !$categories){
+            return new Response(
+                '<html><body><h1>The posts or categories does not exist!</h1></body></html>');
+        }
         return $this->render('PalexBlogBundle:Blog:index.html.twig', [
             'posts'=>$posts,
             'categories'=>$categories,
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @param $slug
+     * @return Response
+     */
 
     public function postAction(Request $request, $slug)
     {
@@ -81,9 +92,15 @@ class BlogController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
+
     public function addPostAction(Request $request)
     {
         $post = new Post();
+        $fs = new Filesystem();
         $form = $this->createForm(PostType::class, $post);
 
         $form->handleRequest($request);
@@ -92,13 +109,22 @@ class BlogController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $post = $form->getData();
             $file = $post->getImage();
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            if($file !== null){
+                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                if($fs->exists($this->getParameter('post_image_directory'))){
+                    try {
+                        $fs->mkdir('%kernel.root_dir%/../web/uploads/images'.mt_rand());
+                    } catch (IOExceptionInterface $e) {
+                        echo "An error occurred while creating your directory at ".$e->getPath();
+                    }
+                }
+                $file->move(
+                    $this->getParameter('post_image_directory'),
+                    $fileName
+                );
+                $post->setImage($fileName);
+            }
 
-            $file->move(
-                $this->getParameter('post_image_directory'),
-                $fileName
-            );
-            $post->setImage($fileName);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
@@ -112,6 +138,11 @@ class BlogController extends Controller
         ]);
 
     }
+
+    /**
+     * @param $slug
+     * @return Response
+     */
 
     public function showByCategoryAction($slug)
     {
