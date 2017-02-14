@@ -15,9 +15,10 @@ use Symfony\Component\HttpFoundation\Request;
 class BlogController extends Controller
 {
     /**
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $posts = $this->getDoctrine()
             ->getManager()
@@ -30,6 +31,8 @@ class BlogController extends Controller
             ->getManager()
             ->getRepository('PalexBlogBundle:Category')
             ->findAll();
+        $paginator  = $this->get('knp_paginator');
+        $paginationPosts = $paginator->paginate($request, $posts, 5);
         return $this->render('PalexBlogBundle:Blog:index.html.twig', [
             'posts'=>$posts,
             'categories'=>$categories,
@@ -39,7 +42,6 @@ class BlogController extends Controller
     /**
      * @ParamConverter("post", options={"mapping": {"slug": "slug"}})
      * @param Request $request
-     * @param Comment $comment
      * @param Post $post
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */

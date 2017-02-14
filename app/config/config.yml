@@ -75,6 +75,8 @@ stof_doctrine_extensions:
         default:
             sluggable: true
             timestampable: true
+
+# KNP menu
 knp_menu:
     # use "twig: false" to disable the Twig extension and the TwigRenderer
     twig:
@@ -83,4 +85,16 @@ knp_menu:
     templating: false
     # the renderer to use, list is also available by default
     default_renderer: twig
+
+#KNP Paginator
+knp_paginator:
+    page_range: 5                      # default page range used in pagination control
+    default_options:
+        page_name: page                # page query parameter name
+        sort_field_name: dataCreated    # sort field query parameter name
+        sort_direction_name: DESC      # sort direction query parameter name
+        distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
+    template:
+        pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig     # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
 

@@ -29,7 +29,7 @@
         "stof/doctrine-extensions-bundle": "^1.2",
         "knplabs/knp-menu-bundle":"^2.0",
         "symfony/finder": "^3.2",
-        "symfony/filesystem": "^3.2"
+        "knplabs/knp-paginator-bundle": "^3.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
