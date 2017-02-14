@@ -7,18 +7,15 @@ use Palex\BlogBundle\Entity\Post;
 use Palex\BlogBundle\Entity\Category;
 use Palex\BlogBundle\Form\Type\PostType;
 use Palex\BlogBundle\Form\Type\CommentType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\HttpFoundation\Response;
-
 
 
 class BlogController extends Controller
 {
     /**
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {
@@ -26,14 +23,13 @@ class BlogController extends Controller
             ->getManager()
             ->getRepository('PalexBlogBundle:Post')
             ->findAll();
+        if(!$posts){
+            throw $this->createNotFoundException('The posts does not exist!');
+        }
         $categories = $this->getDoctrine()
             ->getManager()
             ->getRepository('PalexBlogBundle:Category')
             ->findAll();
-        if(!$posts || !$categories){
-            return new Response(
-                '<html><body><h1>The posts or categories does not exist!</h1></body></html>');
-        }
         return $this->render('PalexBlogBundle:Blog:index.html.twig', [
             'posts'=>$posts,
             'categories'=>$categories,
@@ -41,35 +37,31 @@ class BlogController extends Controller
     }
 
     /**
+     * @ParamConverter("post", options={"mapping": {"slug": "slug"}})
      * @param Request $request
-     * @param $slug
-     * @return Response
+     * @param Comment $comment
+     * @param Post $post
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-
-    public function postAction(Request $request, $slug)
+    public function postAction(Request $request,Post $post)
     {
+        if(!$post){
+            throw $this->createNotFoundException('The post does not exist!');
+        }
         $comment = new Comment();
-        $post = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('PalexBlogBundle:Post')
-            ->findOneBy(['slug'=> $slug ]);
         $comment->setPost($post);
         $form = $this->createForm(CommentType::class, $comment, [
             'method' => 'POST',
         ]);
-
         $form->handleRequest($request);
-        $text = '';
-
         if ($form->isSubmitted() && $form->isValid()) {
             $comment = $form->getData();
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($comment);
             $em->flush();
-            $text = 'Comment added!';
+            $this->addFlash('comment', 'Comment was successfully added!');
+            return $this->redirect($request->getUri());
         }
-
         $categories = $this->getDoctrine()
             ->getManager()
             ->getRepository('PalexBlogBundle:Category')
@@ -79,83 +71,57 @@ class BlogController extends Controller
             ->getManager()
             ->getRepository('PalexBlogBundle:Comment')->findComments($postId);
 
-
-        if(!$post){
-            throw $this->createNotFoundException('The post does not exist!');
-        }
         return $this->render('PalexBlogBundle:Blog:view.html.twig', [
             'post'=>$post,
             'comments'=>$comments,
             'categories'=>$categories,
             'form' => $form->createView(),
-            'text' => $text,
         ]);
     }
 
     /**
      * @param Request $request
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-
     public function addPostAction(Request $request)
     {
         $post = new Post();
-        $fs = new Filesystem();
         $form = $this->createForm(PostType::class, $post);
-
         $form->handleRequest($request);
-        $text = '';
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if($form->isSubmitted() && $form->isValid()){
             $post = $form->getData();
             $file = $post->getImage();
-            if($file !== null){
+            if($file){
                 $fileName = md5(uniqid()).'.'.$file->guessExtension();
-                if($fs->exists($this->getParameter('post_image_directory'))){
-                    try {
-                        $fs->mkdir('%kernel.root_dir%/../web/uploads/images'.mt_rand());
-                    } catch (IOExceptionInterface $e) {
-                        echo "An error occurred while creating your directory at ".$e->getPath();
-                    }
-                }
                 $file->move(
                     $this->getParameter('post_image_directory'),
                     $fileName
                 );
                 $post->setImage($fileName);
             }
-
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
-            $text = "Post added!";
+            $this->addFlash('notice', 'Post was successfully added!');
+            return $this->redirect($request->getUri());
         }
-
         return $this->render('PalexBlogBundle:Blog:form.html.twig', [
             'form' => $form->createView(),
-            'text' => $text,
         ]);
-
     }
 
     /**
+     * @param Category $category
      * @param $slug
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-
-    public function showByCategoryAction($slug)
+    public function showByCategoryAction(Category $category, $slug)
     {
         $categories = $this->getDoctrine()
             ->getManager()
             ->getRepository('PalexBlogBundle:Category')
             ->findAll();
-        $category = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('PalexBlogBundle:Category')
-            ->findBy(
-                ['slug' => $slug]
-            );
         $posts = $this->getDoctrine()
             ->getManager()
             ->getRepository('PalexBlogBundle:Post')

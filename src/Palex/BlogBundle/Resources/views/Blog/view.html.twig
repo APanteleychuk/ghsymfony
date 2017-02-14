@@ -27,7 +27,12 @@
             </div>
         {% endif %}
         <div class="row">
-            <div class="block-form">
+            <div class="block-form col-xs-12">
+                {% for flash_message in app.session.flashBag.get('comment') %}
+                    <div class="flash-notice">
+                        <span style="color: red">{{ flash_message }}</span>
+                    </div>
+                {% endfor %}
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
                 {{ form_end(form) }}

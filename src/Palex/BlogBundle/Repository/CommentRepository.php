@@ -15,11 +15,9 @@ class CommentRepository extends EntityRepository
     public function findComments($postId)
     {
         $query = $this->createQueryBuilder('c')
-            ->select('c')
             ->where('c.post = :post_id')
             ->orderBy('c.createdAt')
             ->setParameter('post_id', $postId);
-
         return $query->getQuery()->getResult();
     }
 }

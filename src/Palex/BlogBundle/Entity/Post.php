@@ -51,8 +51,13 @@ class Post
      * @var string
      * @Assert\File(
      *     maxSize="10M",
-     *     mimeTypes={"image/jpg", "image/gif", "image/png"},
-     *     mimeTypesMessage="Please upload jpg/gif formats"
+     *     mimeTypes={
+     *         "image/png",
+     *         "image/jpeg",
+     *         "image/jpg",
+     *         "image/gif",
+     *     },
+     *     mimeTypesMessage="Please upload jpg/jpeg/gif/png formats and MaxSize < 10Mb"
      * )
      * @ORM\Column(type="string", length=50, nullable=true )
      */
