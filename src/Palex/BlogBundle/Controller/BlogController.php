@@ -10,13 +10,14 @@ use Palex\BlogBundle\Form\Type\CommentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class BlogController extends Controller
 {
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -44,7 +45,7 @@ class BlogController extends Controller
      * @ParamConverter("post", options={"mapping": {"slug": "slug"}})
      * @param Request $request
      * @param Post $post
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function postAction(Request $request,Post $post)
     {
@@ -74,6 +75,11 @@ class BlogController extends Controller
             ->getManager()
             ->getRepository('PalexBlogBundle:Comment')->findComments($postId);
 
+        $breadcrumbs = $this->get("white_october_breadcrumbs");
+        $breadcrumbs->addRouteItem("Home", "palex_blog_homepage");
+        $breadcrumbs->addRouteItem($post->getCategory()->getSlug(), "palex_blog_category_post",['slug' => $post->getCategory()->getSlug()]);
+        $breadcrumbs->addRouteItem($post->getSlug(), "palex_blog_category_post",['slug' => $post->getSlug()]);
+
         return $this->render('PalexBlogBundle:Blog:view.html.twig', [
             'post'=>$post,
             'comments'=>$comments,
@@ -84,7 +90,7 @@ class BlogController extends Controller
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function addPostAction(Request $request)
     {
@@ -115,11 +121,12 @@ class BlogController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param Category $category
      * @param $slug
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function showByCategoryAction(Category $category, $slug)
+    public function showByCategoryAction(Request $request, Category $category, $slug)
     {
         $categories = $this->getDoctrine()
             ->getManager()
@@ -131,9 +138,21 @@ class BlogController extends Controller
             ->findBy(
                 ['category' => $category]
             );
+        if(!$posts){
+            return $this->render('PalexBlogBundle:Blog:no_content.html.twig', [
+                'exception' => 'There are no posts in this category!'
+            ]);
+        }
+        $breadcrumbs = $this->get("white_october_breadcrumbs");
+        $breadcrumbs->addRouteItem("Home", "palex_blog_homepage");
+        $breadcrumbs->addRouteItem("$slug", "palex_blog_category_post",['slug' => $slug]);
+
+        $paginator  = $this->get('knp_paginator');
+        $pageRange = $this->getParameter('knp_paginator.page_range');
+        $pagination = $paginator->paginate($posts, $request->query->getInt('page', 1), $pageRange);
 
         return $this->render('PalexBlogBundle:Blog:index.html.twig', [
-            'posts'=>$posts,
+            'posts'=>$pagination,
             'categories'=>$categories,
         ]);
     }
