@@ -23,7 +23,7 @@ class BlogController extends Controller
         $posts = $this->getDoctrine()
             ->getManager()
             ->getRepository('PalexBlogBundle:Post')
-            ->findAll();
+            ->findAllQuery();
         if(!$posts){
             throw $this->createNotFoundException('The posts does not exist!');
         }
@@ -32,9 +32,10 @@ class BlogController extends Controller
             ->getRepository('PalexBlogBundle:Category')
             ->findAll();
         $paginator  = $this->get('knp_paginator');
-        $paginationPosts = $paginator->paginate($request, $posts, 5);
+        $pageRange = $this->getParameter('knp_paginator.page_range');
+        $pagination = $paginator->paginate($posts, $request->query->getInt('page', 1), $pageRange);
         return $this->render('PalexBlogBundle:Blog:index.html.twig', [
-            'posts'=>$posts,
+            'posts'=>$pagination,
             'categories'=>$categories,
         ]);
     }

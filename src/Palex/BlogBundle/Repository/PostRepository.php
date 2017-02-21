@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class PostRepository extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\Query
+     */
+    public function findAllQuery()
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.dataCreated', 'DESC')
+            ->getQuery();
+    }
 }
